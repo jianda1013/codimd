@@ -5,7 +5,16 @@ all:start
 
 init: ## Init the project after a git clone
 	@echo "INIT PROJECT"
+	@echo "\n==================================="
 	@cp .env.dist .env
+	@echo "COPY .env\n"
+	@cat .env
+	@echo "\n==================================="
+	@cp .env.hackmd.dist .env.hackmd
+	@echo "COPY .env.hackmd"
+	@cat .env.hackmd
+	@echo "\n==================================="
+	@echo "done"
 
 start: ## Build and launch the project in background
 	@echo "Launch dettached projet and build\n"
@@ -20,6 +29,6 @@ logs: ## Attach to standard output of containers (to see logs)
 re: clean start
 
 exec: ## Execute command inside api container, need to use command=
-	$(DC) exec $(MC) sh
+	$(DC) exec $(MC) bash
 
 .DEFAULT_GOAL := start

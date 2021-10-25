@@ -1,4 +1,6 @@
 .env
 .env.hackmd
+.env.minio
 database-data
 upload-data
+.vscode
