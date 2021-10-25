@@ -1,0 +1,41 @@
+networks:
+  hackmd:
+    driver: bridge
+
+version: "3"
+services:
+  codimd:
+    image: hackmdio/hackmd:2.4.1
+    env_file:
+      - .env
+      - .env.hackmd
+    environment:
+      - "CMD_DB_URL=${MYSQL_HOST}://${MYSQL_USER}:${MYSQL_PASSWORD}@database:3306/${MYSQL_DATABASE}"
+    depends_on:
+      - database
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./upload-data:/home/hackmd/app/public/uploads
+    restart: always
+    networks:
+      - hackmd
+  database:
+    restart: always
+    image: mysql:8
+    env_file:
+      - .env
+    volumes:
+      - "./database-data:/var/lib/mysql"
+    networks:
+      - hackmd
+  phpmyadmin:
+    restart: always
+    image: phpmyadmin:latest
+    environment:
+      - PMA_HOST=database
+      - UPLOAD_LIMIT=8192M
+    ports:
+      - "8182:80"
+    networks:
+      - hackmd
